@@ -1,0 +1,22 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{85C4E6AC-43DA-6A04-0ABC-B9820D321E27}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "breederdaoTest",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "ModelingToolsEditorMode",
+			"Enabled": true,
+			"TargetAllowList": [
+				"Editor"
+			]
+		}
+	]
+}
