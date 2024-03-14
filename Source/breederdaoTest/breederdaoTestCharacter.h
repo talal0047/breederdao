@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Blueprint/UserWidget.h"
 #include "Logging/LogMacros.h"
 #include "breederdaoTestCharacter.generated.h"
 
@@ -44,6 +45,14 @@ class AbreederdaoTestCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	/** Show Mouse Cursor Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ShowMouseCursorAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> HUDWidgetClass;
+
+
 public:
 	AbreederdaoTestCharacter();
 	
@@ -55,6 +64,9 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+	/** Toggle Mouse Visibility */
+	void ToggleMouseVisibility(const FInputActionValue& Value);
 			
 
 protected:
