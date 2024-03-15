@@ -93,7 +93,12 @@ void AbreederdaoTestCharacter::SetupPlayerInputComponent(UInputComponent* Player
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AbreederdaoTestCharacter::Look);
 
+		// Toggle Mouse
 		EnhancedInputComponent->BindAction(ShowMouseCursorAction, ETriggerEvent::Triggered, this, &AbreederdaoTestCharacter::ToggleMouseVisibility);
+
+
+		// NPC Interaction
+		EnhancedInputComponent->BindAction(NPCInterationAction, ETriggerEvent::Triggered, this, &AbreederdaoTestCharacter::NPCInteraction);
 	}
 	else
 	{
@@ -121,6 +126,30 @@ void AbreederdaoTestCharacter::ToggleMouseVisibility(const FInputActionValue& Va
 			PlayerController->SetInputMode(FInputModeGameOnly());
 			PlayerController->bEnableClickEvents = false;
 			PlayerController->bEnableMouseOverEvents = false;
+		}
+	}
+}
+
+void AbreederdaoTestCharacter::NPCInteraction(const FInputActionValue& Value)
+{
+	// Perform a line trace or sphere check in front of the player to find interactable NPCs
+	FVector Start = GetActorLocation();
+	FVector End = Start + GetActorForwardVector() * 5; // Define InteractionDistance as desired
+
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(5); // Define InteractionRadius as desired
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this); // Ignore the player
+	QueryParams.bTraceComplex = true;
+
+	TArray<FHitResult> HitResults;
+	bool bHit = GetWorld()->SweepMultiByChannel(HitResults, Start, End, FQuat::Identity, ECC_GameTraceChannel1, Sphere, QueryParams);
+
+	for (const FHitResult& Hit : HitResults)
+	{
+		ANPC* NPC = Cast<ANPC>(Hit.GetActor());
+		if (NPC)
+		{
+			Server_RequestNPCInteraction(NPC);
 		}
 	}
 }
@@ -158,5 +187,14 @@ void AbreederdaoTestCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void AbreederdaoTestCharacter::Server_RequestNPCInteraction_Implementation(ANPC* NPC)
+{
+	if (NPC)
+	{
+		// The server validates the interaction request here
+		NPC->Multicast_PlayInteractionMontage();
 	}
 }

@@ -1,10 +1,11 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
-
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Net/UnrealNetwork.h"
 #include "Blueprint/UserWidget.h"
+#include "NPC.h"
 #include "Logging/LogMacros.h"
 #include "breederdaoTestCharacter.generated.h"
 
@@ -15,7 +16,6 @@ class UInputAction;
 struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
-
 UCLASS(config=Game)
 class AbreederdaoTestCharacter : public ACharacter
 {
@@ -49,6 +49,10 @@ class AbreederdaoTestCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* ShowMouseCursorAction;
 
+	/** NPC Interaction Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* NPCInterationAction;
+
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UUserWidget> HUDWidgetClass;
 
@@ -67,6 +71,9 @@ protected:
 
 	/** Toggle Mouse Visibility */
 	void ToggleMouseVisibility(const FInputActionValue& Value);
+
+	/** NPC Interaction */
+	void NPCInteraction(const FInputActionValue& Value);
 			
 
 protected:
@@ -81,5 +88,9 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	UFUNCTION(Server, Reliable)
+	void Server_RequestNPCInteraction(ANPC* NPC);
+
 };
 
