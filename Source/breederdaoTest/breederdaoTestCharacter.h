@@ -45,10 +45,6 @@ class AbreederdaoTestCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
-	/** Show Mouse Cursor Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* ShowMouseCursorAction;
-
 	/** NPC Interaction Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* NPCInterationAction;
@@ -68,9 +64,6 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
-
-	/** Toggle Mouse Visibility */
-	void ToggleMouseVisibility(const FInputActionValue& Value);
 
 	/** NPC Interaction */
 	void NPCInteraction(const FInputActionValue& Value);

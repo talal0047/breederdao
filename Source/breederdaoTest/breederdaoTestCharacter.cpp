@@ -93,40 +93,12 @@ void AbreederdaoTestCharacter::SetupPlayerInputComponent(UInputComponent* Player
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AbreederdaoTestCharacter::Look);
 
-		// Toggle Mouse
-		EnhancedInputComponent->BindAction(ShowMouseCursorAction, ETriggerEvent::Triggered, this, &AbreederdaoTestCharacter::ToggleMouseVisibility);
-
-
 		// NPC Interaction
 		EnhancedInputComponent->BindAction(NPCInterationAction, ETriggerEvent::Triggered, this, &AbreederdaoTestCharacter::NPCInteraction);
 	}
 	else
 	{
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
-	}
-}
-
-void AbreederdaoTestCharacter::ToggleMouseVisibility(const FInputActionValue& Value) {
-	APlayerController* PlayerController = Cast<APlayerController>(Controller);
-	if (PlayerController)
-	{
-		// Check if the cursor is currently visible
-		if (!PlayerController->bShowMouseCursor)
-		{
-			// Show the cursor and enable UI interaction
-			PlayerController->bShowMouseCursor = true;
-			PlayerController->SetInputMode(FInputModeGameAndUI());
-			PlayerController->bEnableClickEvents = true;
-			PlayerController->bEnableMouseOverEvents = true;
-		}
-		else
-		{
-			// Hide the cursor and enable game controls
-			PlayerController->bShowMouseCursor = false;
-			PlayerController->SetInputMode(FInputModeGameOnly());
-			PlayerController->bEnableClickEvents = false;
-			PlayerController->bEnableMouseOverEvents = false;
-		}
 	}
 }
 
